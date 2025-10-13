@@ -69,9 +69,11 @@
     console.log('key pressed: ', pressedKey.keyCode)
 
     keys.forEach(key => key.classList.remove("playing"))
+
     
     arrayOfAudios.forEach(audioSample => {
       if(audioSample.dataset.key == pressedKey.keyCode) {
+        audioSample.currentTime = 0;
         audioSample.play();
         console.log('pressed key' + audioSample.dataset.key + ' index ' + arrayOfAudios.indexOf(audioSample))
         keys[arrayOfAudios.indexOf(audioSample)].classList.add("playing");
