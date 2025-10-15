@@ -7,12 +7,12 @@
 </head>
 <body>
 
-
+    <h1>Time</h1>
     <div class="clock">
       <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
+        <div class="hand hour-hand">hour</div>
+        <div class="hand min-hand">min</div>
+        <div class="hand second-hand">second</div>
       </div>
     </div>
 
@@ -55,6 +55,7 @@
       width: 100%;
       height: 100%;
       transform: translateY(-3px); /* account for the height of the clock hands */
+      transform: rotate(90deg);
     }
 
     .hand {
@@ -63,12 +64,51 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: right center;
     }
 
   </style>
 
   <script>
 
+    // Create a class which rotates the element by 6 degrees (360°/60s=6)
+
+    // Create a function which counts every second
+    // Implement a minute-counter on that function which clicks every 60 seconds, until 60 minutes 
+    // Implement a hour-counter on that function which clicks every 60 minutes, until 24 hours 
+    // Add the rotate class every secon on the second-hand, every minute on the minute-hand, every hour on the hour-hand
+
+    // Create a function which counts the local time (hh-mm-ss)
+    // Calculate the position of each hand (hh, mm, ss) based on the current time
+    // After the position is obtained, apply the .rotated class to each hand
+    const hour = document.querySelector(".hour-hand");
+    const min = document.querySelector(".min-hand");
+    const second = document.querySelector(".second-hand");
+    const time = document.querySelector("h1");
+
+
+    window.setInterval(getTime, 1000);
+
+    function printOnScreen() {
+      return console.log("hello");
+    }
+
+    function getTime() {
+      const date = new Date();
+      console.log('date:', date)
+
+      time.innerHTML = date.toLocaleTimeString();
+
+      const timeSeconds = date.getSeconds();
+      const timeMinutes = date.getMinutes();
+      const timeHours = date.getHours();
+
+      console.log(`Hour: ${timeHours}, minutes: ${timeMinutes}, seconds: ${timeSeconds}`);
+
+      hour.style.transform = `rotate(${timeHours*30}deg)`;
+      min.style.transform = `rotate(${timeMinutes*6}deg)`;
+      second.style.transform = `rotate(${timeSeconds*6}deg)`;
+    }
 
   </script>
 </body>
