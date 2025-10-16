@@ -6,8 +6,8 @@
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
 <body>
-  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
-
+  <h2>Update CSS Variables with <span class='h1'>JS</span></h2>
+  <h3>hello</h3>
   <div class="controls">
     <label for="spacing">Spacing:</label>
     <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
@@ -19,7 +19,7 @@
     <input id="base" type="color" name="base" value="#ffc600">
   </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <img style="width: 400px;" src="https://images.unsplash.com/photo-1760479099643-b37a52e7c094?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170">
 
   <style>
 
@@ -61,6 +61,101 @@
   </style>
 
   <script>
+
+    // CHANGE BAR VALUE 
+    // when mouse of the user is placed over the bar area and the user clicks, change bar value
+    // while the mouse is still pressed over the bar area, change the bar value depending on the area
+    // when the user use mouse up over the bar area, set the final value corrensponding to the leaved point
+
+    // bind the bar value to the corrensponding img properties
+    const img = document.querySelector("img");
+    const h1 = document.querySelector(".h1");
+
+    const spacing = document.getElementById("spacing");
+    const blurEl = document.getElementById("blur");
+    const base = document.getElementById("base");
+
+    const root = document.querySelector(":root");
+
+    let spacingStyle = '--spacing'; 
+    let blurStyle = '--blur'; 
+    let baseStyle = '--base'; 
+
+    let spacingValue = window.getComputedStyle(root).getPropertyValue('--spacing'); 
+    let blurValue = window.getComputedStyle(root).getPropertyValue('--blur'); 
+    let baseValue = window.getComputedStyle(root).getPropertyValue('--base'); 
+    spacingMouseDown = false;
+    blurMouseDown = false;
+
+
+    base.addEventListener("input", updateFirst);
+    base.select();
+
+    function updateFirst(event) {
+      if (root) {
+        console.log(event.target.value)
+        root.style.setProperty(baseStyle, event.target.value)
+      }
+    }
+
+    function mouseBarValueSetter(bar, flagMouseDown, propertyToChange, _valueMax, _valueMin) {
+      
+      let value = bar.getAttribute("value");
+      let valueMin = bar.getAttribute("min");
+      let valueMax = bar.getAttribute("max");
+
+      console.log(`val: ${value} min: ${valueMin} max: ${valueMax}`)
+      let delta = 100/(valueMax-valueMin)
+      
+      bar.addEventListener("mousedown", () => {
+        flagMouseDown = true;
+        console.log("down", flagMouseDown);
+      })
+
+      bar.addEventListener("mouseup", () => {
+        flagMouseDown = false;
+        console.log("up", flagMouseDown);
+      })
+
+      bar.addEventListener("mousemove", (e) => {
+        if (flagMouseDown) {
+          console.log("moving", flagMouseDown);
+          console.log("e.offsetX", e.offsetX);
+          console.log("e.offsetX", e.offsetX/delta);
+
+          let toChange = e.offsetX/delta;
+
+          if(toChange < 0) {
+            toChange = 0;
+          }  
+          
+          if (toChange > valueMax) {
+            toChange = valueMax;
+          }
+
+          if(e.offsetX > 100) {
+            toChange = valueMax;
+          }
+          
+          console.log("toChange", toChange)
+          console.log(spacingStyle)
+          console.log("delta", delta)
+          let finalValue = toChange
+
+          console.log("finalValue", finalValue)
+          console.log("propertyToChange", propertyToChange)
+          root.style.setProperty(propertyToChange, finalValue + 'px')
+        }
+      })
+    }
+
+    mouseBarValueSetter(spacing, spacingMouseDown, spacingStyle);
+    mouseBarValueSetter(blurEl, blurMouseDown, blurStyle);
+      
+
+
+
+
   </script>
 
 </body>
