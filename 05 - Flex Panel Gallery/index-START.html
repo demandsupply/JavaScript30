@@ -130,20 +130,20 @@
     console.log("panel: ", panel);
     console.log("panel: ", panel[1].childNodes[3].textContent);
 
-  panel.forEach(div => {
-    div.children[1].addEventListener("click", () => {
-      console.log("hover over central div");
-      if(div.classList.contains('open-active')) {
-        div.classList.remove('open-active', 'open');
-      } else {
-      div.classList.add('open-active', 'panel', 'open');
-      }
-    });
+    panel.forEach(div => {
+      div.children[1].addEventListener("click", () => {
+        console.log("hover over central div");
+        if(div.classList.contains('open-active')) {
+          div.classList.remove('open-active', 'open');
+        } else {
+        div.classList.add('open-active', 'panel', 'open');
+        }
+      });
 
-    div.children[1].addEventListener("transition", () => {
-      div.classList.remove('open-active', 'open');
+      div.children[1].addEventListener("transition", () => {
+        div.classList.remove('open-active', 'open');
+      })
     })
-  })
   </script>
 
 
