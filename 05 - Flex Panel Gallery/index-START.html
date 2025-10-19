@@ -131,15 +131,18 @@
     console.log("panel: ", panel[1].childNodes[3].textContent);
 
   panel.forEach(div => {
-    div.children[1].addEventListener("mouseover", () => {
+    div.children[1].addEventListener("click", () => {
       console.log("hover over central div");
+      if(div.classList.contains('open-active')) {
+        div.classList.remove('open-active', 'open');
+      } else {
       div.classList.add('open-active', 'panel', 'open');
-      console.log(div.children[0]);
-    })
-    div.children[1].addEventListener("mouseleave", () => {
+      }
+    });
+
+    div.children[1].addEventListener("transition", () => {
       div.classList.remove('open-active', 'open');
     })
-    
   })
   </script>
 
