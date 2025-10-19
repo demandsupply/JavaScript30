@@ -123,7 +123,24 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll(".panels");
+    const panel = Array.from(document.querySelectorAll(".panel"));
 
+    console.log("panels: ", panels);
+    console.log("panel: ", panel);
+    console.log("panel: ", panel[1].childNodes[3].textContent);
+
+  panel.forEach(div => {
+    div.children[1].addEventListener("mouseover", () => {
+      console.log("hover over central div");
+      div.classList.add('open-active', 'panel', 'open');
+      console.log(div.children[0]);
+    })
+    div.children[1].addEventListener("mouseleave", () => {
+      div.classList.remove('open-active', 'open');
+    })
+    
+  })
   </script>
 
 
