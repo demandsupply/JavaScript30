@@ -16,36 +16,58 @@
     </ul>
   </form>
 <script>
+
+const suggestions = document.querySelector(".suggestions");
+const inputCity = document.querySelector(".search");
+let results = [];
+let typedString = "Chi";
+
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
-const cities = [];
+let cities = [];
+console.log("suggestions", suggestions)
+
+inputCity.addEventListener("keydown", (key)=> {
+  console.log("KEYDOWN")
+
+  console.log(key.code)
+  if (key.key === 'Backspace') {
+    typedString = typedString.slice(0, typedString.length-1)
+  } else {
+    typedString += key.key
+  }
+  console.log("typedString: ", typedString)
+})
+
 
 fetch(endpoint)
   .then(blob => blob.json()
-  .then(data => cities.push(...data))  // spread operator
+  .then(data => {
+    cities.push(...data);
+    console.log("FETCH")
+
+
+    console.log("filtered: ", findMatches(typedString, cities))
+    let found = findMatches(typedString, cities);
+    console.log("found: ", found)
+    //suggestions.innerHTML = '';
+    found.forEach(item => {
+      let liToAppend = document.createElement('li');
+      liToAppend.innerText = item.city;
+      suggestions.appendChild(liToAppend);
+    })
+
+  })  // spread operator}
+
+
 )
 
-console.log("cities: ", cities);
-
-let sample = [
-  {city: 'New York', growth_from_2000_to_2013: '4.8%', latitude: 40.7127837, longitude: -74.0059413, population: '8405837'},
-  {city: 'Los Angeles', growth_from_2000_to_2013: '4.8%', latitude: 34.0522342, longitude: -118.2436849, population: '3884307'},
-  {city: 'Chicago', growth_from_2000_to_2013: '-6.1%', latitude: 41.8781136, longitude: -87.6297982, population: '2718782'},
-  {city: 'Houston', growth_from_2000_to_2013: '11.0%', latitude: 29.7604267, longitude: -95.3698028, population: '2195914'},
-  {city: 'Philadelphia', growth_from_2000_to_2013: '2.6%', latitude: 39.9525839, longitude: -75.1652215, population: '1553165'}
-]
-
-let typedString = "New York";
-typedString.sub()
-
-function findMatches(typedString, sample) {
-  console.log(sample)
-  let result = sample.filter((item) => item.city === 'New York') 
-  console.log("result:", result)
+function findMatches(typedString, citiesArray) {
+  let result = citiesArray.filter((item) => item.city.substr(0, typedString.length) === typedString) 
   return result;
 }
 
-console.log("filtered: ", findMatches(typedString, sample))
+
 
 </script>
 </body>
