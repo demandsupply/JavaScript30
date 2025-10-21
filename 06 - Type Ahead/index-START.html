@@ -17,10 +17,19 @@
   </form>
 <script>
 
+let sample = [
+  {city: 'New York', growth_from_2000_to_2013: '4.8%', latitude: 40.7127837, longitude: -74.0059413, population: '8405837'},
+  {city: 'New Orleans', growth_from_2000_to_2013: '-21.6%', latitude: 29.95106579999999, longitude: -90.0715323, population: '378715'},
+  {city: 'Newark', growth_from_2000_to_2013: '2.1%', latitude: 40.735657, longitude: -74.1723667, population: '278427'},
+  {city: 'Newport News', growth_from_2000_to_2013: '0.9%', latitude: 37.0870821, longitude: -76.4730122, population: '182020'},
+  {city: 'New ohaven', growth_from_2000_to_2013: '5.5%', latitude: 41.308274, longitude: -72.9278835, population: '130660'},
+  {city: 'New Bedford', growth_from_2000_to_2013: '1.2%', latitude: 41.6362152, longitude: -70.93420499999999, population: '95078'}
+];
+
 const suggestions = document.querySelector(".suggestions");
 const inputCity = document.querySelector(".search");
 let results = [];
-let typedString = "Chi";
+let typedString = "New";
 
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
@@ -67,6 +76,18 @@ function findMatches(typedString, citiesArray) {
   return result;
 }
 
+
+
+let typedString2 = "wa";
+
+findMatches2(typedString2, sample);
+
+function findMatches2(typedString2, sample) {
+  console.log(typeof(typedString2))
+  let result = sample.filter(item => item.city.toLowerCase().includes(typedString2.toLowerCase()))
+  console.log("findMatches2 result: ",  result);
+  return result;
+}
 
 
 </script>
