@@ -7,7 +7,6 @@
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
 <body>
-
   <form class="search-form">
     <input type="text" class="search" placeholder="City or State">
     <ul class="suggestions">
@@ -29,6 +28,9 @@ let sample = [
 const suggestions = document.querySelector(".suggestions");
 const inputCity = document.querySelector(".search");
 let results = [];
+
+let openMark = '<mark>'
+let closeMark = '</mark>'
 let typedString = "New";
 
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
@@ -36,60 +38,50 @@ const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb
 let cities = [];
 console.log("suggestions", suggestions)
 
-inputCity.addEventListener("keydown", (key)=> {
-  console.log("KEYDOWN")
-
-  console.log(key.code)
-  if (key.key === 'Backspace') {
-    typedString = typedString.slice(0, typedString.length-1)
-  } else {
-    typedString += key.key
-  }
-  console.log("typedString: ", typedString)
-})
-
-
 fetch(endpoint)
   .then(blob => blob.json()
   .then(data => {
     cities.push(...data);
-    console.log("FETCH")
-
-
-    console.log("filtered: ", findMatches(typedString, cities))
-    let found = findMatches(typedString, cities);
-    console.log("found: ", found)
-    //suggestions.innerHTML = '';
-    found.forEach(item => {
-      let liToAppend = document.createElement('li');
-      liToAppend.innerText = item.city;
-      suggestions.appendChild(liToAppend);
-    })
-
   })  // spread operator}
-
-
 )
+
+inputCity.addEventListener("input", (key)=> {
+  typedString = inputCity.value;
+  console.log("typed: ", typedString)
+  
+  let found = findMatches2(typedString, cities);
+  suggestions.innerHTML = '';
+
+  found.forEach(item => {       
+    let liToAppend = document.createElement('li');
+    let pToAppend = document.createElement('p');
+    console.log("city found: ", markWord(item.city, typedString))
+  
+    pToAppend.innerHTML = markWord(item.city, typedString) + ", " + item.state + ", population: " + item.population;
+    liToAppend.appendChild(pToAppend)
+    suggestions.appendChild(liToAppend);
+  })
+})
 
 function findMatches(typedString, citiesArray) {
   let result = citiesArray.filter((item) => item.city.substr(0, typedString.length) === typedString) 
   return result;
 }
 
-
-
-let typedString2 = "wa";
-
-findMatches2(typedString2, sample);
-
-function findMatches2(typedString2, sample) {
+function findMatches2(typedString2, sample2) {
   console.log(typeof(typedString2))
-  let result = sample.filter(item => item.city.toLowerCase().includes(typedString2.toLowerCase()))
+  let result;
+  result = sample2.filter(item => item.city.toLowerCase().includes(typedString2.toLowerCase()))
   console.log("findMatches2 result: ",  result);
   return result;
 }
 
-
+function markWord(found, toMark) {
+  console.log(`entered marwork(). Found is ${found} and toMark is ${toMark}`);
+  let split = found.toLowerCase().split(toMark.toLowerCase());
+  let newWord = `${split[0]}<mark>${toMark}</mark>${split[1]}`;
+  return newWord;
+}
 </script>
 </body>
 </html>
