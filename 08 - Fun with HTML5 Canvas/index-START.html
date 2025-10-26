@@ -34,7 +34,7 @@
 
     console.log(`coordinates x are ${x} and y are ${y}`);
     ctx.beginPath();
-    ctx.arc(x, y, 2, 0, Math.PI*2)
+    ctx.arc(x, y, randomSize(), 0, Math.PI*2)
     ctx.fillStyle = randomColor() || "black";
     ctx.fill();
   }
@@ -45,8 +45,14 @@
     let red = Math.round(Math.random()*250);
     let green = Math.round(Math.random()*250);
     let blue = Math.round(Math.random()*250);
-    console.log(`red: ${red}, green: ${green}, blue: ${blue}`)
-    return `rgb(${red}, ${green}, ${blue})`;
+    let alpha = (Math.random().toFixed(1));
+    console.log(`red: ${red}, green: ${green}, blue: ${blue}, alpha:${alpha}`)
+    return `rgb(${red}, ${green}, ${blue}, ${alpha})`;
+  }
+
+  function randomSize() {
+    let size = Math.round(Math.random()*10);
+    return size;
   }
 
   // console.log(randomColor())
