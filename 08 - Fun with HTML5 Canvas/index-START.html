@@ -8,6 +8,48 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.getElementById("draw");
+  const ctx = canvas.getContext("2d");
+  let checkMouseDown = false;
+  // 1 - add a listener for when the user clicks on the canva
+  canvas.addEventListener("mousedown", (mouse) => {
+    checkMouseDown = true;
+    // 2 - when 1 is true, follow (tracks) the mouse movements ad draw a line of its movements
+    draw(mouse)
+    console.log("mousedown");
+    canvas.addEventListener("mousemove", (mouse) => {
+      if(checkMouseDown) {
+        draw(mouse)
+      }
+    })
+  })
+
+  // 3 - when the user stop pressing the mouse (mouseleave), stop drawing the line
+  canvas.addEventListener("mouseup", () => checkMouseDown = false);
+
+
+  function draw(mouse) {
+    const x = mouse.clientX;
+    const y = mouse.clientY;
+
+    console.log(`coordinates x are ${x} and y are ${y}`);
+    ctx.beginPath();
+    ctx.arc(x, y, 2, 0, Math.PI*2)
+    ctx.fillStyle = randomColor() || "black";
+    ctx.fill();
+  }
+
+  // add a function which change randomly the color of the line WHILE is drawn
+  // add a function which change randomly the size of the line WHILE is drawn
+  function randomColor() {
+    let red = Math.round(Math.random()*250);
+    let green = Math.round(Math.random()*250);
+    let blue = Math.round(Math.random()*250);
+    console.log(`red: ${red}, green: ${green}, blue: ${blue}`)
+    return `rgb(${red}, ${green}, ${blue})`;
+  }
+
+  // console.log(randomColor())
 </script>
 
 <style>
