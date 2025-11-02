@@ -134,26 +134,18 @@
   })
 
   document.addEventListener("keydown", (e) => {
-    if (e.key == "Shift") {
-      checkShiftPressed = true;
-    }
+    if (e.key == "Shift") checkShiftPressed = true;
   })
 
   document.addEventListener("keyup", (e) => {
-    if (e.key == "Shift") {
-      checkShiftPressed = false;
-    }
+    if (e.key == "Shift") checkShiftPressed = false;
   })
 
   function checkRange(array, firstChecked, lastChecked, bool) {
     if (lastChecked > firstChecked) {
-      for (let i = firstChecked; i <= lastChecked; i++) {
-        array[i].checked = bool;
-      }
+      for (let i = firstChecked; i <= lastChecked; i++) array[i].checked = bool;
     } else if (lastChecked < firstChecked) {
-      for (let i = lastChecked; i <= firstChecked; i++) {
-        array[i].checked = bool;
-      }      
+      for (let i = lastChecked; i <= firstChecked; i++) array[i].checked = bool;
     } else return;
   }
 
