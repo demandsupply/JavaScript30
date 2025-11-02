@@ -97,6 +97,66 @@
   </div>
 
 <script>
+  // 1 - Alert when an item is checked
+  // 2 - If an item is checked and the "shift" key is pressed ->
+  // 2.1 - If the used checks another item check all the items between the two checked items
+  const items = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+  let firstCheckedIndex;
+  let lastCheckedIndex;
+  let checkShiftPressed = false;
+  let checkMouseDown = false;
+  let checkTheBox = true;
+
+  document.addEventListener("click", (e) => {
+    if(e.target.checked) {
+      console.log(e.target)
+      if(firstCheckedIndex === undefined) {
+        firstCheckedIndex = items.indexOf(e.target); 
+      } else {
+        if (checkShiftPressed && firstCheckedIndex != undefined) {
+          checkTheBox = true;
+          lastCheckedIndex = items.indexOf(e.target); 
+          console.log("firstCheckedIndex is: " + firstCheckedIndex + " lastCheckedIndex is: " + lastCheckedIndex)
+          checkRange(items, firstCheckedIndex, lastCheckedIndex, checkTheBox)
+          firstCheckedIndex = lastCheckedIndex;
+          console.log("NEW firstCheckedIndex is: ", firstCheckedIndex)
+        }
+      }
+    } else if (e.target.checked === false) {
+      if (checkShiftPressed) {
+        checkTheBox = false;
+        lastCheckedIndex = items.indexOf(e.target); 
+        checkRange(items, firstCheckedIndex, lastCheckedIndex, checkTheBox)
+        firstCheckedIndex = lastCheckedIndex;
+      }
+      console.log("unchecked")
+    }
+  })
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key == "Shift") {
+      checkShiftPressed = true;
+    }
+  })
+
+  document.addEventListener("keyup", (e) => {
+    if (e.key == "Shift") {
+      checkShiftPressed = false;
+    }
+  })
+
+  function checkRange(array, firstChecked, lastChecked, bool) {
+    if (lastChecked > firstChecked) {
+      for (let i = firstChecked; i <= lastChecked; i++) {
+        array[i].checked = bool;
+      }
+    } else if (lastChecked < firstChecked) {
+      for (let i = lastChecked; i <= firstChecked; i++) {
+        array[i].checked = bool;
+      }      
+    } else return;
+  }
+
 </script>
 </body>
 </html>
