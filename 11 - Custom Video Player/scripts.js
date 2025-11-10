@@ -52,14 +52,14 @@ function calcPercentage() {
     let currTime = playerVideo.currentTime;
     let totalTime = playerVideo.duration;
     let percentage = currTime/totalTime*100;
-    // console.log("percentage :", percentage.toFixed(1))
+    console.log("percentage :", percentage.toFixed(1))
     progressFilled.hasAttribute('flex-basis');
     progressFilled.setAttribute('style', `flex-basis: ${percentage.toFixed(2)}%`);
 }
 
 // Hook up the event listeners
-setInterval(calcPercentage, 100)
-console.log("progressFilled: ", progressFilled)
+// setInterval(calcPercentage, 100)
+playerVideo.addEventListener("timeupdate", calcPercentage);
 
 
 playerVideo.addEventListener("click", playVideo);
