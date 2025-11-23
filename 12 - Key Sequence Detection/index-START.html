@@ -7,6 +7,36 @@
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
   <body>
-    <script></script>
+    <script>
+      let typedSequence = [];
+      const unlockSequence = "unlock";
+      let check = false
+
+      window.addEventListener("keyup", (e) => {
+        console.log(e.key)
+        typedSequence.push(e.key);
+        console.log("typedSequence: ", typedSequence)
+
+        if (typedSequence.length >= unlockSequence.length) check = true;
+
+        if (check) {
+          tempArray = typedSequence.slice(typedSequence.length-unlockSequence.length, typedSequence.length);
+
+          let tempString = String(createString(tempArray))
+          console.log(`unlockSequence: ${unlockSequence}, tempString: ${tempString}`)
+
+          if (tempString == unlockSequence) {
+            console.log("Sequence unlocked!")
+            cornify_add()
+          } 
+        }
+      })
+
+      function createString(array) {
+        let newString = '';
+        array.forEach(char => newString = newString + char)
+        return newString;
+      }
+    </script>
   </body>
 </html>
