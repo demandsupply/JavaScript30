@@ -9,29 +9,43 @@
 
   <script>
     // start with strings, numbers and booleans
+    let age = 100
+    let age2 = age
+    console.log(age, age2)
+    age = age*2
+    console.log(age, age2)
+
 
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
 
     // and we want to make a copy of it.
-
     // You might think we can just do something like this:
+    const team = players;
+
+    console.log(players, team)
 
     // however what happens when we update that array?
+    team.pop()
 
     // now here is the problem!
-
     // oh no - we have edited the original array too!
+    console.log(players, team)
 
     // Why? It's because that is an array reference, not an array copy. They both point to the same array!
-
     // So, how do we fix this? We take a copy instead!
 
     // one way
+    const team2 = team.slice()
+    console.log("team2: ", team2)
 
     // or create a new array and concat the old one in
+    const team3 = [].concat(team)
+    console.log("team3: ", team3)
 
     // or use the new ES6 Spread
+    const team4 = [...players]
+    console.log("team4: ", team4)
 
     // now when we update it, the original one isn't changed
 
@@ -44,12 +58,42 @@
     };
 
     // and think we make a copy:
+    const newPerson = person
+
+    console.log(person, newPerson)
+    newPerson.name = 'Mario'
+    console.log(person, newPerson)
 
     // how do we take a copy instead?
+    const newPerson2 = Object.assign({}, person)
+    console.log(person, newPerson2)
+    newPerson2.name = 'Luigi'
+    console.log(person, newPerson2)
 
     // We will hopefully soon see the object ...spread
+    const newPerson3 = {...person}
+    console.log(person, newPerson)
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+
+    const shop = {
+                  name : "shop",
+                  address : "acdscsdc",
+                  items : {
+                    drink : "water",
+                    drink2 : "coca-cola"
+                  }
+                } 
+
+    console.log("shop: ", shop)
+    const shop2 = Object.assign({}, shop)
+    console.log("shop 2: ", shop2)
+
+    shop2.items.drink = 'beer'
+    shop2.address = 'new address'
+    console.log("shop 1: ", shop)
+    console.log("shop 2: ", shop2)
+
 
   </script>
 
