@@ -44,6 +44,31 @@
   </div>
 
   <script>
+    const images = Array.from(document.querySelectorAll("img"))
+    const windowHeight = window.innerHeight;
+    console.log(windowHeight)
+
+    document.addEventListener("scroll", debounce(showPosition))
+
+    function showPosition(e) {
+      console.count(e)
+      images.forEach(image => {
+        console.log(image.getBoundingClientRect())
+        console.log((image.getBoundingClientRect().top - image.getBoundingClientRect().height/2))
+
+        if ((image.getBoundingClientRect().top) <  windowHeight) {
+          if (triggerPoint(image, windowHeight) < windowHeight/2) image.classList.add("active")
+        }
+      })
+    }
+
+    function triggerPoint(image, windowHeight) {
+      return (
+        image.getBoundingClientRect().top % windowHeight +
+        image.getBoundingClientRect().height / 2
+      )
+    }
+
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
