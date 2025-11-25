@@ -27,10 +27,86 @@
   </div>
 
 <script>
+  // localStorage.clear()
+
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
   const items = [];
 
+  const input = document.querySelector("input[type='text']");
+  const submit = document.querySelector("input[type='submit']");
+
+  let counter = localStorage.length;
+
+  for (let i = 1; i <= counter; i++) {
+    let checkItem = localStorage.getItem(`item-${i}`)
+    console.log("checkItem value: ", checkItem)
+
+    if (checkItem === null) continue
+
+    let newLi = document.createElement('li');
+    let newInput = document.createElement('input');
+    let label = document.createElement('label');
+    let value = localStorage.getItem(`value-${i}`) === "true"
+
+    newInput.setAttribute("type","checkbox")
+    newInput.setAttribute("id",`item-${i}`)
+    newInput.checked = value
+    newInput.classList.add("plates")
+
+    console.log("element of li checked value: ", value)
+
+    label.setAttribute("for", `item-${i}`)
+    label.innerHTML = localStorage.getItem(`item-${i}`)
+
+    newLi.appendChild(newInput);
+    newLi.appendChild(label);
+    itemsList.appendChild(newLi);
+  }
+
+  // setInterval(show, 5000)
+  function toggleCheck(e) {
+    console.log(e.target.id)
+    let condition = e.target.checked;
+
+    let tempIndex = e.target.id.split('-');
+    let index = tempIndex[1]
+    console.log(index)
+
+    localStorage.setItem(`value-${index}`, condition)
+
+    // e.target.input.checked;
+  }
+
+  itemsList.addEventListener("click", toggleCheck)
+
+  let tmpLi = '';
+
+  input.addEventListener("input", (e) => {
+    console.log(e.data)
+    tmpLi += e.data
+    console.log("tmpLi: ", tmpLi)
+  })
+
+  submit.addEventListener("click", () => {
+    localStorage.setItem(`item-${counter}`, tmpLi)
+    localStorage.setItem(`value-${counter}`, true)
+    // counter =+ 1;
+  })
+
+  let item =  localStorage.getItem("list")
+
+  for (let i = 1; i <= counter; i++) {
+    let checkItem = localStorage.getItem(`item-${i}`)
+    console.log("checkItem value: ", checkItem)
+
+    if (checkItem === null) continue
+    console.log(localStorage.getItem(`item-${i}`))
+    console.log(localStorage.getItem(`value-${i}`))
+  }
+
+  // localStorage.clear()
+  
 </script>
 
 
