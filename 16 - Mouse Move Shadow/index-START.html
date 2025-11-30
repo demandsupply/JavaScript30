@@ -61,7 +61,7 @@
     console.log(`center coordinates: ${centerCoordinates.centerX}, mouseX coord: ${mouseX}`);
     console.log("delta", delta);
     let x = (centerCoordinates.centerX - centerCoordinates.centerX) - (mouseX - centerCoordinates.centerX);
-    let y = centerCoordinates.centerY - mouseY;
+    let y = (centerCoordinates.centerY - centerCoordinates.centerY) - (mouseY - centerCoordinates.centerY);
 
     console.log(typeof(x));
 
