@@ -10,7 +10,9 @@
   <div class="hero">
     <h1 contenteditable>🔥WOAH!</h1>
   </div>
-
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1>
+  </div>
   <style>
   html {
     color: black;
@@ -30,12 +32,57 @@
   }
 
   h1 {
-    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    text-shadow: 100px 100px 0 rgba(0,0,0,1);
     font-size: 100px;
   }
   </style>
 
 <script>
+  // 1 - Get the elements from document
+  let h1 = document.querySelector("h1");
+
+  // 1.5 find the center of the component
+  let centerCoordinates = {
+    centerX : Math.round(h1.getBoundingClientRect().left + (h1.getBoundingClientRect().width)/2),
+    centerY : Math.round(h1.getBoundingClientRect().top + (h1.getBoundingClientRect().height)/2)
+  }
+
+  // 2 - create variable (function) for x & y mouse position and shadow position
+  function shadowMove(mouseX, mouseY) {
+
+
+    let delta = Math.abs(centerCoordinates.centerX - mouseX);
+    let factor = 1 + 1/(delta + 5);
+
+    console.log("factor",  factor);
+
+
+    console.log(h1.getBoundingClientRect());
+    console.log(`center coordinates: ${centerCoordinates.centerX}, mouseX coord: ${mouseX}`);
+    console.log("delta", delta);
+    let x = (centerCoordinates.centerX - centerCoordinates.centerX) - (mouseX - centerCoordinates.centerX);
+    let y = centerCoordinates.centerY - mouseY;
+
+    console.log(typeof(x));
+
+    console.log(`x is: ${x}, y is: ${y}`)
+
+    h1.style.textShadow = `
+      ${x/5*factor}px ${y/5*factor}px 0 rgba(0,0,0,1),
+      ${(x/5*factor)* -1}px ${(y/5*factor)* -1}px 0 rgba(255,0,0,1),
+      ${(y/5*factor)* -1}px ${(x/5*factor)* -1}px 0 rgba(0,255,0,1),
+      ${(y/5*factor)}px ${(x/5*factor)}px 0 rgba(0,0,255,1)
+      `;
+  } 
+
+  // shadowMove()
+
+  // listen for mouse movements and apply function
+  document.addEventListener("mousemove", (e) => {
+    // console.log(e);
+    shadowMove(e.clientX, e.clientY);
+  })
+  
 </script>
 </body>
 </html>
