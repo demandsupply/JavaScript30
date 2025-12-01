@@ -183,6 +183,89 @@
     </li>
   </ul>
 <script>
+
+  let seconds = 0;
+  let minutes = 0;
+  let hours = 0;
+
+  // 1 Get all the data-time
+
+  const timeArray = Array.from(document.querySelectorAll("[data-time]"));
+  console.log("timeArray:", timeArray[1].dataset["time"])
+
+  // 2 convert the values of data-time into a number
+  // create function which, given this string format ("hh:mm:ss"), returns hours/mins/secs numbers
+  function parseTime(stringTime) {
+    let parsedString = {
+      "hours" : 0,
+      "minutes" : 0,
+      "seconds" : 0
+    }
+    // let seconds;
+    // let minutes;
+    // let hours;
+
+    let stringSplitted = stringTime.trim().split(":");
+    console.log("stringSplitted: ", stringSplitted)
+
+    if (stringSplitted.length === 3) {
+      parsedString.hours = parseInt(stringSplitted[0]);
+      parsedString.minutes = parseInt(stringSplitted[1]);
+      parsedString.seconds = parseInt(stringSplitted[2]);
+    } else if (stringSplitted.length === 2) {
+      parsedString.minutes = parseInt(stringSplitted[0]);
+      parsedString.seconds = parseInt(stringSplitted[1]);
+    } else {
+      parsedString.seconds = parseInt(stringSplitted[0]);
+    }
+
+    console.log(`hours: ${parsedString.hours}, minutes: ${parsedString.minutes}, seconds: ${parsedString.seconds}`)
+    // return [parseInt(hours), parseInt(minutes), parseInt(seconds)];
+    return parsedString
+  }
+
+  let prova = "05:45:32"
+  console.log("prova:", parseTime(prova))
+
+
+
+
+  // 3 sum all the values to obtain total time - hh-mm-ss format
+  // 60s -> 1m; 60m -> 1h
+  function updateTime(objectTime) {
+    hours += objectTime.hours;
+    minutes += objectTime.minutes;
+    seconds += objectTime.seconds;
+  }
+
+
+  
+  timeArray.forEach(item => {
+    console.log("item:", item.dataset["time"])
+    let time = item.dataset["time"];
+    updateTime(parseTime(time))
+  })
+
+  function calculateTime(hh, mm, ss) {
+    let addMinutesFromDivision = Math.floor(ss / 60);
+    let secondsFinal = ss % 60;
+
+    let currentTotalMinutes = mm + addMinutesFromDivision
+    let addHOursFromDivision = Math.floor(currentTotalMinutes / 60);
+    let minutesFinal = currentTotalMinutes % 60;
+
+    let hoursFinal = hh + addHOursFromDivision;
+
+
+    console.log(`hours: ${hoursFinal}, minutes: ${minutesFinal}, seconds: ${secondsFinal}, hourstoadd: ${addHOursFromDivision}, minutes to add: ${addMinutesFromDivision}`)
+
+    return [hoursFinal, minutesFinal, secondsFinal]
+  }
+
+  const finalTime = calculateTime(hours, minutes, seconds)
+  console.log("result:", finalTime)
+
+
 </script>
 </body>
 </html>
