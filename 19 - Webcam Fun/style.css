@@ -35,6 +35,7 @@ html {
   top: 20px;
   right: 20px;
   width:200px;
+  border: 1px solid #000;
 }
 
 /*
@@ -47,6 +48,7 @@ html {
 
 .strip img {
   width: 100px;
+  /* height: 100px; */
   overflow-x: scroll;
   padding: 0.8rem 0.8rem 2.5rem 0.8rem;
   box-shadow: 0 0 3px rgba(0,0,0,0.2);

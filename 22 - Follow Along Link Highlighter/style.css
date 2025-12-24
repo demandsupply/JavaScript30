@@ -45,6 +45,13 @@ a {
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
+.backcolor {
+  color: brown;
+  transition: all 0.2s;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+
+}
+
 .menu {
   padding: 0;
   display: flex;
