@@ -1,62 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Speech Detection</title>
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Speech Detection</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="words" contenteditable></div>
 
-  <div class="words" contenteditable>
-  </div>
+    <script>
+      window.SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
 
-<script>
-  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const words = document.querySelector(".words");
+      let resultArray = [];
+      const recognition = new SpeechRecognition();
+      recognition.interimResults = true;
+      // recognition.continuous = true;
 
+      // 1 start the voice recognition when a speech is started
+      // recognition.start();
+      // recognition.addEventListener("speechstart", (e) => {
+      //   console.log("sppech started!");
+      // });
+      // 2 every time you say a phrase create a new p in the document and write that phrase word by word
 
-</script>
+      let p = document.createElement("p");
 
+      words.appendChild(p);
 
-  <style>
-    html {
-      font-size: 10px;
-    }
+      recognition.addEventListener("result", (result) => {
+        // 3 when the phrase is finished (= pause of seconds) close the p and start a new one
+        const transcription = Array.from(result.results);
 
-    body {
-      background: #ffc600;
-      font-family: 'helvetica neue';
-      font-weight: 200;
-      font-size: 20px;
-    }
+        console.log("transcription", transcription);
 
-    .words {
-      max-width: 500px;
-      margin: 50px auto;
-      background: white;
-      border-radius: 5px;
-      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
-      padding: 1rem 2rem 1rem 5rem;
-      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
-      background-size: 100% 3rem;
-      position: relative;
-      line-height: 3rem;
-    }
+        transcription.forEach((item) => {
+          console.log("item:", item[0].transcript);
+        });
 
-    p {
-      margin: 0 0 3rem;
-    }
+        transcription.map((paragraph) => {
+          console.log("paragraph:", paragraph);
 
-    .words:before {
-      content: '';
-      position: absolute;
-      width: 4px;
-      top: 0;
-      left: 30px;
-      bottom: 0;
-      border: 1px solid;
-      border-color: transparent #efe4e4;
-    }
-  </style>
+          p.innerHTML = paragraph[0].transcript;
+        });
 
-</body>
+        if (result.results[0].isFinal) {
+          p = document.createElement("p");
+          words.appendChild(p);
+        }
+      });
+
+      recognition.addEventListener("end", () => recognition.start());
+
+      recognition.start();
+    </script>
+
+    <style>
+      html {
+        font-size: 10px;
+      }
+
+      body {
+        background: #ffc600;
+        font-family: "helvetica neue";
+        font-weight: 200;
+        font-size: 20px;
+      }
+
+      .words {
+        max-width: 500px;
+        margin: 50px auto;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+        padding: 1rem 2rem 1rem 5rem;
+        background: -webkit-gradient(
+            linear,
+            0 0,
+            0 100%,
+            from(#d9eaf3),
+            color-stop(4%, #fff)
+          )
+          0 4px;
+        background-size: 100% 3rem;
+        position: relative;
+        line-height: 3rem;
+      }
+
+      p {
+        margin: 0 0 3rem;
+      }
+
+      .words:before {
+        content: "";
+        position: absolute;
+        width: 4px;
+        top: 0;
+        left: 30px;
+        bottom: 0;
+        border: 1px solid;
+        border-color: transparent #efe4e4;
+      }
+    </style>
+  </body>
 </html>
