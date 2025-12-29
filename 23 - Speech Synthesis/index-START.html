@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Speech Synthesis</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <title>Speech Synthesis</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Pacifico"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
     <div class="voiceinator">
-
       <h1>The Voiceinator 5000</h1>
 
       <select name="voice" id="voices">
@@ -18,25 +20,127 @@
       </select>
 
       <label for="rate">Rate:</label>
-      <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+      <input name="rate" type="range" min="0" max="3" value="1" step="0.1" />
 
       <label for="pitch">Pitch:</label>
 
-      <input name="pitch" type="range" min="0" max="2" step="0.1">
-      <textarea name="text">Hello! I love JavaScript 👍</textarea>
+      <input name="pitch" type="range" min="0" max="2" step="0.1" />
+      <!-- <textarea name="text">
+Escursioni e ciaspolate, scoprite il lato più rilassante dell’inverno. Uscire e godere dei magnifici monti innevati e dell’aria fresca di montagna. Le escursioni invernali sono energizzanti e salutari.</textarea
+      > -->
+      <textarea name="text" id="">
+The SpeechSynthesisVoice interface of the Web Speech API represents a voice that the system supports. Every SpeechSynthesisVoice has its own relative speech service including information about language, name and URI.
+      </textarea>
+      <!-- <textarea name="text">
+Make your websites dynamic and interactive with JavaScript! You'll create features and stand-alone applications. This module includes projects where you will learn how to manipulate the DOM, use object-oriented programming principles, and fetch real-world data using APIs.</textarea
+      > -->
       <button id="stop">Stop!</button>
       <button id="speak">Speak</button>
-
     </div>
 
-<script>
-  const msg = new SpeechSynthesisUtterance();
-  let voices = [];
-  const voicesDropdown = document.querySelector('[name="voice"]');
-  const options = document.querySelectorAll('[type="range"], [name="text"]');
-  const speakButton = document.querySelector('#speak');
-  const stopButton = document.querySelector('#stop');
-</script>
+    <script>
+      // create an object wich contains what the person is going to say, the pitch, rate, which voice and text
+      const msg = new SpeechSynthesisUtterance();
 
-</body>
+      let voices = [];
+      const voicesDropdown = document.querySelector('[name="voice"]');
+      const options = document.querySelectorAll(
+        '[type="range"], [name="text"]'
+      );
+      const speakButton = document.querySelector("#speak");
+      const stopButton = document.querySelector("#stop");
+
+      // set the text to read in the msg object
+      msg.text = Array.from(options).find(
+        (input) => input.name === "text"
+      ).value;
+
+      // set the speed rate in the msg object
+      msg.rate = Array.from(options).find(
+        (input) => input.name === "rate"
+      ).value;
+
+      // set the pitch rate in the msg object
+      msg.pitch = Array.from(options).find(
+        (input) => input.name === "pitch"
+      ).value;
+
+      // update pitch or change values when user updates range input
+      options.forEach((input) =>
+        input.addEventListener("input", (event) => {
+          console.log("input to", input.name);
+
+          let attribute = event.target.name;
+          let value;
+
+          if (input.name === "rate" || input.name === "pitch") {
+            console.log("rate or pitch", event.target.value);
+            value = Number(event.target.value).toFixed(2);
+          } else if (input.name === "text") {
+            console.log("text", event.target.value);
+            value = event.target.value;
+          }
+
+          msg[`${attribute}`] = value;
+          console.log(msg);
+
+          console.log(
+            `msg text: ${msg.text}, msg pitch: ${msg.pitch}, msg rate: ${msg.rate}`
+          );
+        })
+      );
+
+      console.log(
+        `msg text: ${msg.text}, msg pitch: ${msg.pitch}, msg rate: ${msg.rate}`
+      );
+
+      // load all availables voices
+      function populateVoices() {
+        voices = this.getVoices();
+        console.log("voices: ", voices);
+
+        voices.forEach((voice) => {
+          let option = document.createElement("option");
+          // option.innerHTML = `<option value="${voice.lang}">${voice.name}</option>`;
+          option.innerHTML = voice.name;
+          // option.setAttribute("data-name", voice.name);
+          option.value = voice.lang;
+          voicesDropdown.appendChild(option);
+          // console.log(voice);
+        });
+      }
+
+      speechSynthesis.addEventListener("voiceschanged", populateVoices);
+
+      // set the lang in the msg object
+      voicesDropdown.addEventListener("change", (e) => {
+        msg.lang = e.target.value;
+        // msg.voice = e.target.options[e.target.selectedIndex].text;
+        const selectedVoice = voices.find(
+          (voice) =>
+            voice.name === e.target.options[e.target.selectedIndex].text
+        );
+        msg.voice = selectedVoice;
+        console.log(selectedVoice);
+
+        console.log(e.target);
+        console.log(e.target.value);
+        console.log(e.target.options[e.target.selectedIndex].text);
+      });
+
+      // play synth voice
+      speakButton.addEventListener("click", () => {
+        speechSynthesis.cancel();
+        speechSynthesis.speak(msg);
+        console.log(msg);
+        console.log("speak button clicked");
+      });
+
+      // stop syinth voice
+      stopButton.addEventListener("click", () => {
+        speechSynthesis.cancel();
+        console.log("stop button clicked");
+      });
+    </script>
+  </body>
 </html>
