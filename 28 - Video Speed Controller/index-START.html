@@ -1,21 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Video Speed Scrubber</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
-
-  <div class="wrapper">
-    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
-    <div class="speed">
-      <div class="speed-bar">1×</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Video Speed Scrubber</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <video
+        class="flex"
+        width="765"
+        height="430"
+        src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4"
+        loop
+        controls
+      ></video>
+      <div class="speed">
+        <div class="speed-bar">1×</div>
+      </div>
     </div>
-  </div>
 
-<script>
-</script>
-</body>
+    <script>
+      // grab the elements
+      const video = document.querySelector("video");
+      const speed = document.querySelector(".speed");
+      const speedBar = speed.querySelector(".speed-bar");
+      console.log(speed);
+      console.log(speedBar);
+      let checkMouseDown = false;
+
+      // console log on mouseon, mousemove, mouseup inside the speed element
+      // after console log, get the starting Y point and final Y point of the mouse when moving it
+      speed.addEventListener("mousedown", (e) => {
+        checkMouseDown = true;
+        console.log(e);
+      });
+      speed.addEventListener("mouseup", (e) => {
+        checkMouseDown = false;
+
+        console.log(e);
+      });
+      speed.addEventListener("mousemove", (e) => {
+        if (!checkMouseDown) return;
+        e.preventDefault();
+        // calculate the delta (used to change the vertical speedBar position and the video speed)
+        let currentPos = e.offsetY;
+        let changePercentage = calcDelta(currentPos);
+
+        // change the speedBar position according to delta
+        speedBar.style.height = changePercentage.toFixed(2) + "%";
+        parseSpeed(changePercentage);
+      });
+
+      speed.addEventListener("click", (e) => {
+        let currentPos = e.offsetY;
+        let changePercentage = calcDelta(currentPos);
+        speedBar.style.height = changePercentage.toFixed(2) + "%";
+        parseSpeed(changePercentage);
+      });
+
+      document.addEventListener("click", (e) => {
+        console.log(e.y);
+      });
+      // create a function to calculate the delta between the cursor pos and the speedBar
+      function calcDelta(currentPos) {
+        let changePercentage =
+          100 - ((speed.clientHeight - currentPos) / speed.clientHeight) * 100;
+        return changePercentage;
+      }
+
+      // create a function which shows in the speedBar the current fine-tuned speed
+      // and change the video speed according to the input
+      function parseSpeed(percentage) {
+        percentage < 10
+          ? (speedBar.innerHTML = `${(percentage / 10).toFixed(1)}x`)
+          : (speedBar.innerHTML = `${(percentage / 10).toFixed(0)}x`);
+
+        video.playbackRate = (percentage / 10).toFixed(2);
+        console.log(video.playbackRate);
+      }
+    </script>
+  </body>
 </html>
