@@ -1,42 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Click and Drag</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
-  <div class="items">
-    <div class="item item1">01</div>
-    <div class="item item2">02</div>
-    <div class="item item3">03</div>
-    <div class="item item4">04</div>
-    <div class="item item5">05</div>
-    <div class="item item6">06</div>
-    <div class="item item7">07</div>
-    <div class="item item8">08</div>
-    <div class="item item9">09</div>
-    <div class="item item10">10</div>
-    <div class="item item11">11</div>
-    <div class="item item12">12</div>
-    <div class="item item13">13</div>
-    <div class="item item14">14</div>
-    <div class="item item15">15</div>
-    <div class="item item16">16</div>
-    <div class="item item17">17</div>
-    <div class="item item18">18</div>
-    <div class="item item19">19</div>
-    <div class="item item20">20</div>
-    <div class="item item21">21</div>
-    <div class="item item22">22</div>
-    <div class="item item23">23</div>
-    <div class="item item24">24</div>
-    <div class="item item25">25</div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Click and Drag</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="items">
+      <div class="item item1">01</div>
+      <div class="item item2">02</div>
+      <div class="item item3">03</div>
+      <div class="item item4">04</div>
+      <div class="item item5">05</div>
+      <div class="item item6">06</div>
+      <div class="item item7">07</div>
+      <div class="item item8">08</div>
+      <div class="item item9">09</div>
+      <div class="item item10">10</div>
+      <div class="item item11">11</div>
+      <div class="item item12">12</div>
+      <div class="item item13">13</div>
+      <div class="item item14">14</div>
+      <div class="item item15">15</div>
+      <div class="item item16">16</div>
+      <div class="item item17">17</div>
+      <div class="item item18">18</div>
+      <div class="item item19">19</div>
+      <div class="item item20">20</div>
+      <div class="item item21">21</div>
+      <div class="item item22">22</div>
+      <div class="item item23">23</div>
+      <div class="item item24">24</div>
+      <div class="item item25">25</div>
+    </div>
 
-<script>
-</script>
+    <script>
+      // exercise about mouse event / mouse positioning
+      const items = document.querySelector(".items");
+      const itemsArray = document.querySelectorAll(".item");
+      let mouseStartX;
+      let mouseCurrentXPos;
+      let mouseFinalPos;
+      let savedDelta = 0;
+      let checkMouseDown = false;
 
+      // get mouse coordinates
+      function getMouseCoordinates(mouse) {
+        let mouseXPos = mouse.x;
+        // console.log("mouse: ", mouse);
+        return mouseXPos;
+      }
+
+      // while the mouse is pressed over an item move all the item
+      // horizontally according to the mouse position, and save their new position
+      function moveItems(item, mouseStartX, mouseCurrentXPos) {
+        let delta = mouseStartX - mouseCurrentXPos;
+        let deltaUpdated = mouseStartX - mouseCurrentXPos - savedDelta;
+        console.log(`delta: ${delta}, updated delta: ${deltaUpdated}`);
+        item.style.translate = -deltaUpdated + "px";
+      }
+
+      items.addEventListener("mousedown", (e) => {
+        console.log("mouse down");
+        checkMouseDown = true;
+
+        if (checkMouseDown) {
+          console.log("ad active class");
+          items.classList.toggle("active");
+          mouseStartX = getMouseCoordinates(e);
+          console.log("mouse LAST final pos", mouseFinalPos);
+          console.log("mouse down start pos", mouseStartX);
+        }
+      });
+
+      items.addEventListener("mouseup", (e) => {
+        console.log("mouse up");
+        mouseFinalPos = mouseCurrentXPos;
+        savedDelta += mouseFinalPos - mouseStartX;
+        console.log(
+          `mouseFinalPos is ${mouseFinalPos}, while current delta is ${savedDelta}`
+        );
+        checkMouseDown = false;
+        if (!checkMouseDown) {
+          items.classList.toggle("active");
+        }
+      });
+
+      items.addEventListener("mouseleave", () => {
+        checkMouseDown = false;
+      });
+
+      items.addEventListener("mousemove", (e) => {
+        e.preventDefault();
+        if (checkMouseDown) {
+          itemsArray.forEach((item) => {
+            mouseCurrentXPos = getMouseCoordinates(e);
+            console.log(
+              `mouseStartX: ${mouseStartX}, mouseCurrentXPos: ${mouseCurrentXPos}`
+            );
+            moveItems(item, mouseStartX, mouseCurrentXPos);
+            // alternative way using the items container
+            // items.scrollLeft = mouseStartX - mouseCurrentXPos - savedDelta;
+          });
+        }
+      });
+    </script>
   </body>
 </html>
