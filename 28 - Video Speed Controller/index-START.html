@@ -42,8 +42,6 @@
         console.log(e);
       });
       speed.addEventListener("mousemove", (e) => {
-        if (!checkMouseDown) return;
-        e.preventDefault();
         // calculate the delta (used to change the vertical speedBar position and the video speed)
         let currentPos = e.offsetY;
         let changePercentage = calcDelta(currentPos);
